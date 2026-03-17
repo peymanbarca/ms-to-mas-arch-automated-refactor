@@ -1,0 +1,37 @@
+{
+  "invariants": [
+    {
+      "name": "no_negative_inventory",
+      "type": "query",
+      "collection": "inventory",
+      "query": { "sku": "b2926dc2-cc6d-4c3e-ae40-7a127c173b16" },
+      "check": "stock >= 0"
+    },
+    {
+      "name": "stock_order_conservation",
+      "type": "computed",
+      "formula": "stock_left + completed_orders == expected_reserved"
+    },
+    {
+      "name": "no_pending_orders",
+      "type": "query",
+      "collection": "orders",
+      "query": { "status": "INIT" },
+      "check": "count == 0"
+    },
+    {
+      "name": "payments_match_orders",
+      "type": "computed",
+      "formula": "payments == expected_reserved"
+    },
+    {
+      "name": "shipments_match_orders",
+      "type": "computed",
+      "formula": "shipments == expected_reserved"
+    }
+  ],
+
+  "derived_metrics": {
+    "expected_reserved": "initial_stock / quantity"
+  }
+}

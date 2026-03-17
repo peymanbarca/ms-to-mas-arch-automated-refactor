@@ -1,0 +1,18 @@
+{
+  "services": [
+    {"name": "order"},
+    {"name": "inventory"},
+    {"name": "payment"},
+    {"name": "shipment"},
+    {"name": "product_search"},
+    {"name": "cart"},
+    {"name": "pricing"}
+  ],
+  "edges": [
+    {"from": "order", "to": "cart"},
+    {"from": "order", "to": "inventory"},
+    {"from": "order", "to": "payment"},
+    {"from": "order", "to": "shipment"},
+    {"from": "product_search", "to": "pricing"}
+  ]
+}

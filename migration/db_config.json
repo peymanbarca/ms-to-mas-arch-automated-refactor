@@ -1,0 +1,36 @@
+{
+  "databases": {
+    "inventory": {
+      "type": "mongodb",
+      "uri": "mongodb://user:pass1@localhost:27017/",
+      "db_name": "ms_baseline",
+      "collection_map": {
+        "inventory": "inventory"
+      }
+    },
+    "orders": {
+      "type": "mongodb",
+      "uri": "mongodb://user:pass1@localhost:27017/",
+      "db_name": "ms_baseline",
+      "collection_map": {
+        "orders": "orders"
+      }
+    },
+    "payments": {
+      "type": "mongodb",
+      "uri": "mongodb://user:pass1@localhost:27017/",
+      "db_name": "ms_baseline",
+      "collection_map": {
+        "payments": "payments"
+      }
+    },
+    "shipments": {
+      "type": "mongodb",
+      "uri": "mongodb://user:pass1@localhost:27017/",
+      "db_name": "ms_baseline",
+      "collection_map": {
+        "shipments": "shipments"
+      }
+    }
+  }
+}

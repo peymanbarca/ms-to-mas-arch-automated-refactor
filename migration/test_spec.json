@@ -1,0 +1,44 @@
+{
+  "scenario": "ecommerce_checkout_flow",
+
+  "workflow": [
+    {
+      "name": "search",
+      "method": "GET",
+      "url": "http://127.0.0.1:8008/search",
+      "params": {
+        "q": "looking for headphone with noise cancelling"
+      }
+    },
+    {
+      "name": "add_to_cart",
+      "method": "POST",
+      "url": "http://127.0.0.1:8003/cart/{cart_id}/items",
+      "body": {
+        "sku": "b2926dc2-cc6d-4c3e-ae40-7a127c173b16",
+        "qty": 2
+      },
+      "dynamic_fields": ["cart_id"]
+    },
+    {
+      "name": "checkout",
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/cart/{cart_id}/checkout",
+      "timeout": 30
+    }
+  ],
+
+  "data": {
+    "sku": "b2926dc2-cc6d-4c3e-ae40-7a127c173b16",
+    "item": "headphone",
+    "initial_stock": 10,
+    "quantity": 2
+  },
+
+  "load_profile": {
+    "total_requests": 10,
+    "concurrency": 5,
+    "runs": 1,
+    "delay_between_requests": 0
+  }
+}
