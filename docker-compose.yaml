@@ -2,13 +2,13 @@ version: "3.8"
 services:
   postgres:
     image: postgis/postgis:16-3.4
-    container_name: postgres_ms_to_mas
+    container_name: postgres_ms_to_mas_auto
     environment:
       POSTGRES_USER: user
       POSTGRES_DB: ms_to_mas
       POSTGRES_PASSWORD: pass1
     volumes:
-      - postgres-local-db-ms-to-mas:/var/lib/postgresql/data
+      - postgres-local-db-ms-to-mas-auto:/var/lib/postgresql/data
       - ./init:/docker-entrypoint-initdb.d
     ports:
       - "5442:5432"
@@ -18,29 +18,29 @@ services:
 
   mongodb:
     image: mongo:latest
-    container_name: mongodb_ms_to_mas
+    container_name: mongodb_ms_to_mas_auto
     ports:
       - "27017:27017"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=user
       - MONGO_INITDB_ROOT_PASSWORD=pass1
     volumes:
-      - mongodb-data-ms-to-mas:/data/db
+      - mongodb-data-ms-to-mas-auto:/data/db
 
 
   redis:
     image: redis
-    container_name: redis_ms_to_mas
+    container_name: redis_ms_to_mas_auto
     #restart: always
     ports:
       - '6385:6379'
     command: redis-server --save 20 1 --loglevel warning --requirepass 1
     volumes:
-      - redis-cache-local-ms-to-mas:/data
+      - redis-cache-local-ms-to-mas-auto:/data
 
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: rabbitmq_ms_to_mas
+    container_name: rabbitmq_ms_to_mas_auto
     ports:
       - "5672:5672"  # RabbitMQ broker port
       - "15672:15672"  # RabbitMQ management UI port
@@ -48,7 +48,7 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
     volumes:
-      - rabbitmq-data-ms-to-mas:/var/lib/rabbitmq
+      - rabbitmq-data-ms-to-mas-auto:/var/lib/rabbitmq
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
       interval: 30s
@@ -57,8 +57,19 @@ services:
       start_period: 30s
 
 
+  inventory_service:
+    build: ./ms_baseline/inventory
+    container_name: inventory_service
+    ports:
+      - "8001:8001"
+    environment:
+      - MONGO_URL=mongodb://user:pass1@mongodb:27017/
+      - DB_NAME=ms_baseline
+    depends_on:
+      - mongodb
+
 volumes:
-  redis-cache-local-ms-to-mas:
-  postgres-local-db-ms-to-mas:
-  rabbitmq-data-ms-to-mas:
-  mongodb-data-ms-to-mas:
+  redis-cache-local-ms-to-mas-auto:
+  postgres-local-db-ms-to-mas-auto:
+  rabbitmq-data-ms-to-mas-auto:
+  mongodb-data-ms-to-mas-auto:

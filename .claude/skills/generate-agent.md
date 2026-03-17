@@ -10,7 +10,9 @@ Steps:
 
 4. Generate agent:
    - FastAPI wrapper preserving endpoints
-   - LLM-based decision logic using ollama and langgraph
+   - using ollama (ChatOllama) for LLM call    
+   - LLM configuration MUST be loaded from migration/llm_config.json
+   - LLM-based decision logic using langgraph
    - Tool calls for downstream services
 
 5. Create prompt template:

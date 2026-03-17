@@ -7,17 +7,21 @@ import time
 import threading
 import requests
 import logging
+import os
 
-app = FastAPI()
-db_client = MongoClient("mongodb://localhost:27017/")
-inventory_col = db_client["ms_baseline"]["inventory"]
+app = FastAPI(title="Inventory Service")
+
+MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017/")
+MONGO_DB_NAME = os.getenv("DB_NAME", "ms_baseline")
+db_client = MongoClient(MONGO_URL)
+inventory_col = db_client[MONGO_DB_NAME]["inventory"]
 PROCUREMENT_SERVICE_URL = "http://127.0.0.1:8009/order_supplier"
 
 lock = threading.Lock()
 
 logger = logging.getLogger("inventory")
 logging.basicConfig(
-    filename='logs/inventory_service.log',
+    filename='inventory_service.log',
     level=logging.INFO,  # Log all messages with severity DEBUG or higher
     format='%(asctime)s - %(levelname)s - %(message)s'  # Define the message format
 )
